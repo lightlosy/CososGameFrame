@@ -10,7 +10,7 @@ export default class MainUICtrl extends MVCS.Ctrl{
     constructor(){
         super();
         MainUICtrl._instance = this;
-        UIManager.getInstance().open(ResPath.UIPath.UI_MainUI, 1, 1);
+        UIManager.getInstance().open(ResPath.UIPath.UI_MainUI, 1, 1); 
     }    
     public static getInstance(){
         if(this._instance === null){
