@@ -12,7 +12,7 @@ export default class MainUICtrl extends MVCS.Ctrl{
         super();
         MainUICtrl._instance = this;
         UIManager.getInstance().open(ResPath.UIPath.UI_MainUI, 1, 1);
-        ConfigManager.getAutoConfig("monster1").then((res) => {
+        ConfigManager.getInstance().getAutoConfig("monster1").then((res) => {
             cc.log(res);
         });
     }    
