@@ -16,6 +16,9 @@ export default class ResManager extends BaseManager {
     }
 
     //------------------------------------------------------------
+    private _assetMgr: AssetsManager = AssetsManager.instance;
+
+    /** 单例 */
     private static _instance: ResManager = null;
     static getInstance(){
         if(!this._instance){
@@ -26,8 +29,6 @@ export default class ResManager extends BaseManager {
     static get instance(){
         return this.getInstance();
     }
-
-    private _assetMgr: AssetsManager = AssetsManager.instance;
 
     /** 获取图片散图资源，如果获取失败，则从图集里获取 */
     private async _getRes(path: string, name: string, atlasName?: string): Promise<any> {
