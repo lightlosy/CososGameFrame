@@ -1,6 +1,7 @@
 import BaseManager from "./base/BaseManager";
 import { MVCS } from "../core/mvc/mvcs";
 import AssetsManager from "./AssetsManager";
+import ResManager from "./ResManager";
 
 let w = 960;
 let h = 640;
@@ -43,11 +44,11 @@ export default class UIManager extends BaseManager {
             view = new viewElement();
         }
         if(!view.instance){
-            this._createView(resPath, (prefabInst: cc.Node) => {
+            this._createView(resPath).then((viewObj: cc.Node) => {
                 let names = resPath.split("/");
-                prefabInst.zIndex = zIndex;
-                prefabInst.parent = this._root;
-                view.instance = prefabInst.getComponent(names[names.length - 1]);
+                viewObj.zIndex = zIndex;
+                viewObj.parent = this._root;
+                view.instance = viewObj.getComponent(names[names.length - 1]);
                 this._views[resPath] = view;
             });
         }else{
@@ -81,11 +82,7 @@ export default class UIManager extends BaseManager {
         UIManager._instance = null;
     }
 
-    private _createView(resPath: string, callBack: Function){
-        AssetsManager.getInstance().loadPrefab(resPath).then((res) => {
-            if(res){
-                callBack && callBack(cc.instantiate(res));
-            }
-        });
+    private async _createView(resPath: string): Promise<any> {
+        return ResManager.instance.getPrefab(resPath);
     }
 }
