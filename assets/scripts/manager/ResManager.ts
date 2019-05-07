@@ -41,8 +41,8 @@ export default class ResManager extends BaseManager {
                 this._assetMgr.getSpriteFrameFromAtlas(path + atlasName, name).then((spFrame: cc.SpriteFrame) => {
                     resolve(spFrame);
                 }).catch(() => {
+                    cc.error("[ResManager.ts]----->asset is not exist:", path + name, "--->atlas are not:", atlasName);
                     this._assetMgr.releaseRes(path + atlasName);
-                    cc.error("----->asset is not exist:", path + name, "--->atlas are not:", atlasName);
                     reject();
                 });
             });
@@ -53,7 +53,9 @@ export default class ResManager extends BaseManager {
         return new Promise((resolve, reject) => {
             this._assetMgr.loadPrefab(path).then((res) => {
                 if(res){
-                    resolve && resolve(cc.instantiate(res));
+                    resolve(cc.instantiate(res));
+                }else{
+                    reject();
                 }
             }).catch(() => {
                 reject();
