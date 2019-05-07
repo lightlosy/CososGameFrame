@@ -16,7 +16,7 @@ export default class MainUIView extends MVCS.View {
     }
 
     start(){
-        ResManager.instance.getDraw("btn_lq").then((spFrame) => {
+        ResManager.instance.getDraw("1").then((spFrame) => {
             this.img.spriteFrame = spFrame;
         });
     }

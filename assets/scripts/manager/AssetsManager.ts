@@ -14,6 +14,26 @@ export default class AssetsManager extends BaseManager {
 
     private _resList: any = {}
 
+    /** ------------获取---------------- */
+    async getSpriteFrameFromAtlas(path: string, name: string): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.loadSpriteAtlas(path).then((res: cc.SpriteAtlas) => {
+                let spFrame = res.getSpriteFrame(name);
+                if(spFrame){
+                    resolve(spFrame);
+                }else{
+                    reject();
+                }
+            }).catch(() => {
+                reject();
+            });
+        });
+    }
+
+    async getSprite(path: string): Promise<any> {
+        return this.loadSprite(path);
+    }
+
     /** ------------加载---------------- */
     /** 加载预制体 */
     async loadPrefab(path: string): Promise<any> {
@@ -39,31 +59,11 @@ export default class AssetsManager extends BaseManager {
                         reject();
                         return;
                     }
-                    resolve(res);
                     _self._resList[resPath] = res;
+                    resolve(res);
                 });
             }
         });
-    }
-
-    /** ------------获取---------------- */
-    async getSpriteFrameFromAtlas(path: string, name: string): Promise<any> {
-        return new Promise((resolve, reject) => {
-            this.loadSpriteAtlas(path).then((res: cc.SpriteAtlas) => {
-                let spFrame = res.getSpriteFrame(name);
-                if(spFrame){
-                    resolve(spFrame);
-                }else{
-                    reject();
-                }
-            }).catch(() => {
-                reject();
-            });
-        });
-    }
-
-    async getSprite(path: string): Promise<any> {
-        return this.loadSprite(path);
     }
 
     releaseRes(resPath: string){
