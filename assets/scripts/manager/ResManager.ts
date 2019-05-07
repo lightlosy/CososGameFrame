@@ -1,5 +1,6 @@
 import BaseManager from "./base/BaseManager";
 import AssetsManager from "./AssetsManager";
+import ConfigManager from "./ConfigManager";
 
 export default class ResManager extends BaseManager {
     //------------------------------------------------------------
@@ -15,8 +16,15 @@ export default class ResManager extends BaseManager {
         return this._getPrefab(path);
     }
 
+    /** 获取配置 */
+    async getMonsterConfig(name: string): Promise<any> {
+        let path = "config/auto/";
+        return this._getConfig(path + name);
+    }
+
     //------------------------------------------------------------
     private _assetMgr: AssetsManager = AssetsManager.instance;
+    private _configMgr: ConfigManager = ConfigManager.instance;
 
     /** 单例 */
     private static _instance: ResManager = null;
@@ -41,19 +49,37 @@ export default class ResManager extends BaseManager {
                 this._assetMgr.getSpriteFrameFromAtlas(path + atlasName, name).then((spFrame: cc.SpriteFrame) => {
                     resolve(spFrame);
                 }).catch(() => {
+                    cc.error("[ResManager.ts]----->asset is not exist:", path + name, "--->atlas are not:", atlasName);
                     this._assetMgr.releaseRes(path + atlasName);
-                    cc.error("----->asset is not exist:", path + name, "--->atlas are not:", atlasName);
                     reject();
                 });
             });
         });   
     }
 
+    /** 获取预制体 */
     private async _getPrefab(path: string): Promise<any> {
         return new Promise((resolve, reject) => {
             this._assetMgr.loadPrefab(path).then((res) => {
                 if(res){
-                    resolve && resolve(cc.instantiate(res));
+                    resolve(cc.instantiate(res));
+                }else{
+                    reject();
+                }
+            }).catch(() => {
+                reject();
+            });
+        });
+    }
+
+    /** 获取配置 */
+    private async _getConfig(path: string): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this._configMgr.getConfig(path).then((config: any) => {
+                if(config){
+                    resolve(config.json);
+                }else{
+                    reject();
                 }
             }).catch(() => {
                 reject();
