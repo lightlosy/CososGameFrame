@@ -3,6 +3,7 @@ import MainUIData from "./MainUIData";
 import MainUIView from "./MainUIView";
 import UIManager from "../../manager/UIManager";
 import { ResPath } from "../../respath/ResPath";
+import ConfigManager from "../../manager/ConfigManager";
 
 export default class MainUICtrl extends MVCS.Ctrl{
     private static _instance: MainUICtrl = null;
@@ -11,6 +12,9 @@ export default class MainUICtrl extends MVCS.Ctrl{
         super();
         MainUICtrl._instance = this;
         UIManager.getInstance().open(ResPath.UIPath.UI_MainUI, 1, 1);
+        ConfigManager.getAutoConfig("monster1").then((res) => {
+            cc.log(res);
+        });
     }    
     public static getInstance(){
         if(this._instance === null){

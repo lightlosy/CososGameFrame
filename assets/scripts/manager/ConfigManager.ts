@@ -1,23 +1,16 @@
-import BaseManager from "./base/BaseManager";
+export default class ConfigManager {
+    /** 配置列表 */
+    private static _configList = {};
 
-export default class ConfigManager extends BaseManager {
-    private static _instance: ConfigManager = null;
-    static getInstance(){
-        if(!this._instance){
-            this._instance = new ConfigManager();
-        }
-        return this._instance;
+    /** 获取auto路径下的配置 */
+    static getAutoConfig(jsonName: string){
+        return this.getConfig("config/auto/" + jsonName);
     }
-
-    static get instance () {
-        return this.getInstance();
-    }
-
-    configList = {};
-
-    getConfig(path: string): Promise<any>{
+    
+    /** 获取配置 */
+    static getConfig(path: string): Promise<any>{
         return new Promise((suc: Function, fai: Function) => {
-            let config = this.configList[path];
+            let config = this._configList[path];
             if(!config){
                 cc.loader.loadRes(path, (err, jsonAsset) => {
                     if(err){
@@ -26,20 +19,12 @@ export default class ConfigManager extends BaseManager {
                         return;
                     }
                     config = {json: jsonAsset.json, time: Date.now()}
-                    this.configList[path] = config;
+                    this._configList[path] = config;
                     suc && suc(config);
                 })
             }else{
                 suc && suc(config);
             }}
         );
-    }
-
-    getAutoConfig(name: string){
-        return this.getConfig("config/auto/" + name);
-    }
-
-    onDestroy(){
-        ConfigManager._instance = null;
     }
 }
