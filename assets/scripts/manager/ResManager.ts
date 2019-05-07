@@ -72,12 +72,11 @@ export default class ResManager extends BaseManager {
         });
     }
 
-    /** 获取配置 */
     private async _getConfig(path: string): Promise<any> {
         return new Promise((resolve, reject) => {
-            this._configMgr.getConfig(path).then((config: any) => {
-                if(config){
-                    resolve(config.json);
+            this._configMgr.getConfig(path).then((res) => {
+                if(res){
+                    resolve(res.json);
                 }else{
                     reject();
                 }
@@ -86,7 +85,6 @@ export default class ResManager extends BaseManager {
             });
         });
     }
-
     onDestroy(){
 
     }
