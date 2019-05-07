@@ -1,7 +1,8 @@
 import ModuleManager from "./manager/ModuleManager";
 import UIManager from "./manager/UIManager";
-import LoadManager from "./manager/LoadManager";
 import ConfigManager from "./manager/ConfigManager";
+import AssetsManager from "./manager/AssetsManager";
+import ResManager from "./manager/ResManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -17,7 +18,10 @@ export default class GameLaunch extends cc.Component {
         this._managerList.push(ConfigManager.getInstance());
         
         /** 资源加载管理 */
-        this._managerList.push(LoadManager.getInstance());
+        this._managerList.push(AssetsManager.getInstance());
+
+        /** 资源获取管理 */
+        this._managerList.push(ResManager.getInstance());
 
         /** 游戏模块管理 */
         this._managerList.push(ModuleManager.getInstance());

@@ -1,6 +1,6 @@
 import BaseManager from "./base/BaseManager";
-import LoadManager from "./LoadManager";
 import { MVCS } from "../core/mvc/mvcs";
+import AssetsManager from "./AssetsManager";
 
 let w = 960;
 let h = 640;
@@ -82,9 +82,10 @@ export default class UIManager extends BaseManager {
     }
 
     private _createView(resPath: string, callBack: Function){
-        LoadManager.getInstance().loadPrefab(resPath, (prefabInst: cc.Node) => {
-            if(prefabInst)
-                callBack && callBack(prefabInst);
+        AssetsManager.getInstance().loadPrefab(resPath).then((res) => {
+            if(res){
+                callBack && callBack(cc.instantiate(res));
+            }
         });
     }
 }

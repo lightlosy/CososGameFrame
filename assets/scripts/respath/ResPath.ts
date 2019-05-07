@@ -3,7 +3,7 @@ export namespace ResPath {
     /** UI路径 */
     export class UIPath {
         /** 主界面 */
-        static UI_MainUI: string = "ui/mainui/MainUIView";
+        static UI_MainUI: string = "prefabs/ui/mainui/MainUIView";
     }
 
     export class ConfigPath {

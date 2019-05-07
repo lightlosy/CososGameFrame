@@ -1,6 +1,5 @@
 import UIManager from "./manager/UIManager";
 import { ResPath } from "./respath/ResPath";
-import MainUICtrl from "./game/mainui/MainUICtrl";
 
 const {ccclass, property} = cc._decorator;
 
@@ -10,14 +9,14 @@ export default class TouchEvent extends cc.Component {
 
     onLoad(){
         this.node.on(cc.Node.EventType.TOUCH_END, () => {
-        cc.log(MainUICtrl.getInstance().getView());
-
             this.click = !this.click;
             if(this.click){
                 UIManager.getInstance().open(ResPath.UIPath.UI_MainUI, 1, 1);
+                // cc.director.loadScene('1');
             }
             else{
                 UIManager.getInstance().close(ResPath.UIPath.UI_MainUI);
+                // cc.director.loadScene('Main');
             }
         }, this);
     }
