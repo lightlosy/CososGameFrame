@@ -49,7 +49,7 @@ export default class ResManager extends BaseManager {
                 resolve(spFrame);
             }).catch(() => {
                 /** 没散图则从图集获取 */
-                this.getSpriteFrameFromAtlas(path + atlasName, name).then((spFrame: cc.SpriteFrame) => {
+                this._getSpriteFrameFromAtlas(path + atlasName, name).then((spFrame: cc.SpriteFrame) => {
                     resolve(spFrame);
                 }).catch(() => {
                     cc.error("[ResManager.ts]----->asset is not exist:", path + name, "--->atlas are not:", atlasName);
@@ -60,7 +60,7 @@ export default class ResManager extends BaseManager {
         });   
     }
 
-    async getSpriteFrameFromAtlas(path: string, name: string): Promise<any> {
+    private async _getSpriteFrameFromAtlas(path: string, name: string): Promise<any> {
         return new Promise((resolve, reject) => {
             this._assetMgr.loadSpriteAtlas(path).then((res: cc.SpriteAtlas) => {
                 let spFrame = res.getSpriteFrame(name);
