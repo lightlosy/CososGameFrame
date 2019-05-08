@@ -1,5 +1,7 @@
 import { MVCS } from "../../core/mvc/mvcs";
 import ResManager from "../../manager/ResManager";
+import SoundManager from "../../manager/SoundManager";
+import { ResPath } from "../../respath/ResPath";
 
 const {ccclass, property} = cc._decorator;
 
@@ -19,5 +21,9 @@ export default class MainUIView extends MVCS.View {
         ResManager.instance.getDraw("1").then((spFrame) => {
             this.img.spriteFrame = spFrame;
         });
+    }
+
+    onClick(){
+        SoundManager.instance.play(ResPath.audioPath.btnClick);
     }
 }

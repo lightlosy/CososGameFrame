@@ -11,7 +11,7 @@ export default class MainUICtrl extends MVCS.Ctrl{
     constructor(){
         super();
         MainUICtrl._instance = this;
-        UIManager.getInstance().open(ResPath.UIPath.UI_MainUI, 1, 1); 
+        UIManager.getInstance().open(ResPath.uiPath.UI_MainUI, 1, 1); 
         ResManager.instance.getMonsterConfig("monster1").then((res) => {
             cc.log(res);
         });
@@ -24,7 +24,7 @@ export default class MainUICtrl extends MVCS.Ctrl{
     }
 
     getView(){
-        return UIManager.getInstance().getView(ResPath.UIPath.UI_MainUI) as MainUIView;
+        return UIManager.getInstance().getView(ResPath.uiPath.UI_MainUI) as MainUIView;
     }
 
     getData(){

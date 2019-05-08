@@ -12,54 +12,45 @@ export default class AssetsManager extends BaseManager {
         return this.getInstance();
     }
 
-    private _resList: any = {}
+    private _resList: any = {};
 
-    /** ------------获取---------------- */
-    async getSpriteFrameFromAtlas(path: string, name: string): Promise<any> {
-        return new Promise((resolve, reject) => {
-            this.loadSpriteAtlas(path).then((res: cc.SpriteAtlas) => {
-                let spFrame = res.getSpriteFrame(name);
-                if(spFrame){
-                    resolve(spFrame);
-                }else{
-                    reject();
-                }
-            }).catch(() => {
-                reject();
-            });
-        });
-    }
-
-    async getSprite(path: string): Promise<any> {
-        return this.loadSprite(path);
-    }
-
-    /** ------------加载---------------- */
     /** 加载预制体 */
     async loadPrefab(path: string): Promise<any> {
         return this.loadAssetsAsync(path, cc.Prefab);
     }
 
+    /** 加载帧图片 */
     async loadSprite(path: string): Promise<any> {
         return this.loadAssetsAsync(path, cc.SpriteFrame);
     }
 
+    /** 加载图集 */
     async loadSpriteAtlas(path: string): Promise<any> {
         return this.loadAssetsAsync(path, cc.SpriteAtlas);
     }
 
-    async loadAssetsAsync(resPath: string, type: typeof cc.Asset): Promise<any> {
+    /** 加载音频 */
+    async loadAudioClip(path: string): Promise<any>{
+        return this.loadAssetsAsync(path, cc.AudioClip);
+    }
+
+    /** 加载配置 */
+    async loadConfig(path: string): Promise<any>{
+        return this.loadAssetsAsync(path, cc.JsonAsset);
+    }
+
+    async loadAssetsAsync(path: string, type: typeof cc.Asset): Promise<any> {
         return new Promise((resolve: Function, reject: Function) => {
             let _self = this;
-            if(_self._resList[resPath]){
-                resolve(_self._resList[resPath]);
+            if(_self._resList[path]){
+                resolve(_self._resList[path]);
             }else{
-                cc.loader.loadRes(resPath, type, function (err, res) {
+                cc.loader.loadRes(path, type, function (err, res) {
                     if(err){
                         reject();
                         return;
                     }
-                    _self._resList[resPath] = res;
+                    _self._resList[path] = res;
                     resolve(res);
                 });
             }

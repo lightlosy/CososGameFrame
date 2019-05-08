@@ -1,13 +1,11 @@
+import { UIPath } from "./uipath/UIPath";
+import { ConfigPath } from "./configpath/ConfigPath";
+import { AudioPath } from "./audiopath/AudioPath";
+
+
 /** 资源路径读取(root: resources) */
 export namespace ResPath {
-    /** UI路径 */
-    export class UIPath {
-        /** 主界面 */
-        static UI_MainUI: string = "prefabs/ui/mainui/MainUIView";
-    }
-
-    export class ConfigPath {
-        /** auto */
-        static Auto_Monster1: string = "config/auto/monster1";
-    }
+    export const uiPath = UIPath;
+    export const configPath = ConfigPath;
+    export const audioPath = AudioPath;
 }

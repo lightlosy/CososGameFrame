@@ -1,6 +1,7 @@
 import ModuleManager from "./manager/ModuleManager";
 import UIManager from "./manager/UIManager";
 import ResManager from "./manager/ResManager";
+import SoundManager from "./manager/SoundManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -20,6 +21,9 @@ export default class GameLaunch extends cc.Component {
 
         /** 游戏UI管理 */
         this._managerList.push(UIManager.getInstance());
+
+        /** 音频管理 */
+        this._managerList.push(SoundManager.getInstance());
     }
 
     onDestroy(){
