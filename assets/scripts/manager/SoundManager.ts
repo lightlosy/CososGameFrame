@@ -23,7 +23,31 @@ export default class SoundManager extends BaseManager {
         });
     }
 
-    onDestroy(){
+    pauseCurrent(){
+        cc.audioEngine.pause(this._current);
+    }
 
+    pauseAll(){
+        cc.audioEngine.pauseAll();
+    }
+
+    stopCurrent(){
+        cc.audioEngine.stop(this._current);
+    }
+
+    stopAll(){
+        cc.audioEngine.stopAll();
+    }
+
+    resumeCurrent(){
+        cc.audioEngine.resume(this._current);
+    }
+
+    resumeAll(){
+        cc.audioEngine.resumeAll();
+    }
+
+    onDestroy(){
+        this._loadList = {};
     }
 }

@@ -1,6 +1,5 @@
 import BaseManager from "./base/BaseManager";
 import { MVCS } from "../core/mvc/mvcs";
-import AssetsManager from "./AssetsManager";
 import ResManager from "./ResManager";
 
 let w = 960;
@@ -82,7 +81,7 @@ export default class UIManager extends BaseManager {
         UIManager._instance = null;
     }
 
-    private async _createView(resPath: string): Promise<any> {
+    private async _createView(resPath: string): Promise<cc.Node> {
         return ResManager.instance.getPrefab(resPath);
     }
 }

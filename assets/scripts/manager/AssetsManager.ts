@@ -20,22 +20,22 @@ export default class AssetsManager extends BaseManager {
     }
 
     /** 加载帧图片 */
-    async loadSprite(path: string): Promise<any> {
+    async loadSprite(path: string): Promise<cc.SpriteFrame> {
         return this.loadAssetsAsync(path, cc.SpriteFrame);
     }
 
     /** 加载图集 */
-    async loadSpriteAtlas(path: string): Promise<any> {
+    async loadSpriteAtlas(path: string): Promise<cc.SpriteAtlas> {
         return this.loadAssetsAsync(path, cc.SpriteAtlas);
     }
 
     /** 加载音频 */
-    async loadAudioClip(path: string): Promise<any>{
+    async loadAudioClip(path: string): Promise<cc.AudioClip>{
         return this.loadAssetsAsync(path, cc.AudioClip);
     }
 
     /** 加载配置 */
-    async loadConfig(path: string): Promise<any>{
+    async loadConfig(path: string): Promise<cc.JsonAsset>{
         return this.loadAssetsAsync(path, cc.JsonAsset);
     }
 

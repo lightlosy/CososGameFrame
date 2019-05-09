@@ -1,0 +1,16 @@
+{
+    "name": "mvc-template",
+    "main": "main.js",
+    "main-menu": {
+        "自定义/create mvc": {
+            "message": "mvc-template:open"
+        }
+    },
+    "panel": {
+        "main": "panel/index.js",
+        "type": "dockable",
+        "title": "panel",
+        "width": 400,
+        "height": 300
+    }
+}
