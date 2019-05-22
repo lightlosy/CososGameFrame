@@ -1,5 +1,6 @@
 import MainUICtrl from "../game/mainui/MainUICtrl";
 import BaseManager from "./base/BaseManager";
+import SceneCtrl from "../scene/SceneCtrl";
 
 export default class ModuleManager extends BaseManager{
     private static _instance: ModuleManager = null;
@@ -13,12 +14,14 @@ export default class ModuleManager extends BaseManager{
     moduleTable = [];
     constructor(){
         super();
-        this.registerModule(new MainUICtrl());
+        this.moduleTable = this.initModule();
     }
 
-    registerModule(inst){
-        this.moduleTable.push(inst);
-        // cc.log(this.moduleTable)
+    initModule(){
+        return [
+            SceneCtrl.getInstance(),
+            MainUICtrl.getInstance(),
+        ];
     }
 
     onDestroy(){

@@ -6,12 +6,9 @@ abstract class BaseData extends EventSystem {}
 
 export namespace MVCS {
     export abstract class View extends BaseView {
-        init(data?: any){
-
-        }
-        onLoad(){
-            console.log("12313");
-        }
+        init(data?: any){}
+        onLoad(){}
+        onFlush(){}
     }
     
     export abstract class Ctrl extends BaseCtrl {

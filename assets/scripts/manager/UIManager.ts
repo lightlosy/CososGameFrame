@@ -37,31 +37,40 @@ export default class UIManager extends BaseManager {
         this._root.y = 0;
     }
 
-    open(resPath: string, zIndex: number, openEffect: number){
-        let view = this._views[resPath];
-        if(!view){
-            view = new viewElement();
-        }
-        if(!view.instance){
-            this._createView(resPath).then((viewObj: cc.Node) => {
-                let names = resPath.split("/");
-                viewObj.zIndex = zIndex;
-                viewObj.parent = this._root;
-                view.instance = viewObj.getComponent(names[names.length - 1]);
-                this._views[resPath] = view;
-            });
-        }else{
-            view.instance.node.active = true;
-        }
+    open(resPath: string, zIndex: number, openEffect: number): Promise<MVCS.View>{
+        return new Promise((resolve) => {
+            let view = this._views[resPath];
+            if(!view){
+                view = new viewElement();
+            }
+            let openSuc = (viewNode: cc.Node) => {
+                viewNode.zIndex = zIndex;
+                viewNode.parent = this._root;
+            }
+            if(!view.instance){
+                this._createView(resPath).then((viewObj: MVCS.View) => {
+                    openSuc(viewObj.node);
+                    resolve(viewObj);
+                });
+            }else{
+                view.instance.node.active = true;
+                openSuc(view.instance.node);
+                resolve(view.instance);
+            }
+        });
     }
 
-    getView(resPath: string){
-        let view = this._views[resPath];
-        if(!view){
-            view = new viewElement();
-            this._views[resPath] = view;
-        }
-        return view.instance;
+    getView<T>(resPath: string): Promise<T>{
+        return new Promise((resolve) => {
+            let view: any = this._views[resPath];
+            if(!view){
+                this._createView(resPath).then((view: any) => {
+                    resolve(view.instance);
+                });
+            }else{
+                resolve(view.instance);
+            }
+        });
     }
 
     close(resPath: string, isDelete: boolean = false){
@@ -81,7 +90,21 @@ export default class UIManager extends BaseManager {
         UIManager._instance = null;
     }
 
-    private async _createView(resPath: string): Promise<cc.Node> {
-        return ResManager.instance.getPrefab(resPath);
+    private async _createView(resPath: string): Promise<MVCS.View> {
+        return new Promise((resolve) => {
+            let view = this._views[resPath];
+            if(!view){
+                view = new viewElement();
+                ResManager.instance.getPrefab(resPath).then((viewObj: cc.Node) => {
+                    let names = resPath.split("/");
+                    viewObj.parent = this._root;
+                    view.instance = viewObj.getComponent(names[names.length - 1]);
+                    this._views[resPath] = view;
+                    resolve(view.instance);
+                });
+            }else{
+                resolve(view.instance);
+            }
+        });
     }
 }

@@ -4,6 +4,7 @@ import MainUIView from "./MainUIView";
 import UIManager from "../../manager/UIManager";
 import { ResPath } from "../../respath/ResPath";
 import ResManager from "../../manager/ResManager";
+import { CommonConst } from "../common/CommonConst";
 
 export default class MainUICtrl extends MVCS.Ctrl{
     private static _instance: MainUICtrl = null;
@@ -11,7 +12,7 @@ export default class MainUICtrl extends MVCS.Ctrl{
     constructor(){
         super();
         MainUICtrl._instance = this;
-        UIManager.getInstance().open(ResPath.uiPath.UI_MainUI, 1, 1); 
+        UIManager.getInstance().open(ResPath.uiPath.UI_MainUI, CommonConst.Layer.MainUI, CommonConst.ShowEffect.None); 
         ResManager.instance.getMonsterConfig("monster1").then((res) => {
             cc.log(res);
         });
@@ -21,10 +22,6 @@ export default class MainUICtrl extends MVCS.Ctrl{
             this._instance = new MainUICtrl();
         }
         return this._instance;
-    }
-
-    getView(){
-        return UIManager.getInstance().getView(ResPath.uiPath.UI_MainUI) as MainUIView;
     }
 
     getData(){
