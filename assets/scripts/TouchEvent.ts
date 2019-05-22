@@ -6,6 +6,7 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class TouchEvent extends cc.Component {
+    
     click: boolean = true;
 
     onLoad(){
@@ -13,11 +14,11 @@ export default class TouchEvent extends cc.Component {
             this.click = !this.click;
             SoundManager.instance.play(ResPath.audioPath.btnClick);
             if(this.click){
-                UIManager.getInstance().open(ResPath.uiPath.UI_MainUI, 1, 1);
+                // UIManager.getInstance().open(ResPath.uiPath.UI_MainUI, 1, 1);
                 // cc.director.loadScene('1');
             }
             else{
-                UIManager.getInstance().close(ResPath.uiPath.UI_MainUI);
+                // UIManager.getInstance().close(ResPath.uiPath.UI_MainUI);
                 // cc.director.loadScene('Main');
             }
         }, this);
