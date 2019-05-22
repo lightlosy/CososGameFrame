@@ -14,7 +14,7 @@ export default class MainUICtrl extends MVCS.Ctrl{
         MainUICtrl._instance = this;
         UIManager.getInstance().open(ResPath.uiPath.UI_MainUI, CommonConst.Layer.MainUI, CommonConst.ShowEffect.None); 
         ResManager.instance.getMonsterConfig("monster1").then((res) => {
-            cc.log(res);
+            // cc.log(res); 
         });
     }    
     public static getInstance(){
