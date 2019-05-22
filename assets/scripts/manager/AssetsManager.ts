@@ -59,6 +59,7 @@ export default class AssetsManager extends BaseManager {
 
     releaseRes(resPath: string){
         cc.loader.releaseRes(resPath);
+        this._resList[resPath] = null;
     }
     
     onDestroy(){
