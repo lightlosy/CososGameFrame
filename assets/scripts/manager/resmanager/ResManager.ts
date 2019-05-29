@@ -1,5 +1,6 @@
-import BaseManager from "./base/BaseManager";
 import AssetsManager from "./AssetsManager";
+import BaseManager from "../base/BaseManager";
+import Manager from "../Manager";
 
 export default class ResManager extends BaseManager {
     //------------------------------------------------------------
@@ -17,7 +18,7 @@ export default class ResManager extends BaseManager {
     async getDraw(name: string): Promise<cc.SpriteFrame> {
         let path = "textures/draw/";
         let atlasName = "0-draw"; //没有图集则为空
-        return this._getRes(path, name, atlasName);
+        return this._getSprite(path, name, atlasName);
     }
 
     /** 获取配置 */
@@ -27,22 +28,10 @@ export default class ResManager extends BaseManager {
     }
 
     //------------------------------------------------------------
-    private _assetMgr: AssetsManager = AssetsManager.instance;
-
-    /** 单例 */
-    private static _instance: ResManager = null;
-    static getInstance(){
-        if(!this._instance){
-            this._instance = new ResManager();
-        }
-        return this._instance;
-    }
-    static get instance(){
-        return this.getInstance();
-    }
+    private _assetMgr: AssetsManager = Manager.Assets;
 
     /** 获取图片散图资源，如果获取失败，则从图集里获取 */
-    private async _getRes(path: string, name: string, atlasName?: string): Promise<cc.SpriteFrame> {
+    private async _getSprite(path: string, name: string, atlasName?: string): Promise<cc.SpriteFrame> {
         return new Promise((resolve, reject) => {
             /** 获取散图 */
             this._assetMgr.loadSprite(path + name).then((spFrame: cc.SpriteFrame) => {
@@ -53,7 +42,7 @@ export default class ResManager extends BaseManager {
                     resolve(spFrame);
                 }).catch(() => {
                     cc.error("[ResManager.ts]----->asset is not exist:", path + name, "--->atlas are not:", atlasName);
-                    this._assetMgr.releaseRes(path + atlasName);
+                    // this._assetMgr.releaseRes(path + atlasName);
                     reject();
                 });
             });

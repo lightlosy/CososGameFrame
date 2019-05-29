@@ -1,6 +1,6 @@
-import BaseManager from "./base/BaseManager";
-import { MVCS } from "../core/mvc/mvcs";
-import ResManager from "./ResManager";
+import { MVCS } from "../../core/mvc/mvcs";
+import BaseManager from "../base/BaseManager";
+import Manager from "../Manager";
 
 let w = 960;
 let h = 640;
@@ -17,14 +17,6 @@ class viewElement {
 }
 
 export default class UIManager extends BaseManager {
-    private static _instance: UIManager = null;
-    static getInstance(){
-        if(!this._instance){
-            this._instance = new UIManager();
-        }
-        return this._instance;
-    }
-
     private _views: {[key: string]: viewElement} = {};
     private _root: cc.Node = new cc.Node("uiRoot");
 
@@ -87,7 +79,6 @@ export default class UIManager extends BaseManager {
 
     onDestroy(){
         this._views = {};
-        UIManager._instance = null;
     }
 
     private async _createView(resPath: string): Promise<MVCS.View> {
@@ -95,7 +86,7 @@ export default class UIManager extends BaseManager {
             let view = this._views[resPath];
             if(!view){
                 view = new viewElement();
-                ResManager.instance.getPrefab(resPath).then((viewObj: cc.Node) => {
+                Manager.Res.getPrefab(resPath).then((viewObj: cc.Node) => {
                     let names = resPath.split("/");
                     viewObj.parent = this._root;
                     view.instance = viewObj.getComponent(names[names.length - 1]);

@@ -1,18 +1,7 @@
-import BaseManager from "./base/BaseManager";
+import BaseManager from "../base/BaseManager";
 
 export default class AssetsManager extends BaseManager {
-    private static _instance: AssetsManager = null;
-    static getInstance(){
-        if(!this._instance){
-            this._instance = new AssetsManager();
-        }
-        return this._instance;
-    }
-    static get instance(){
-        return this.getInstance();
-    }
-
-    private _resList: any = {};
+    private _assetsList: any = {};
 
     /** 加载预制体 */
     async loadPrefab(path: string): Promise<any> {
@@ -42,15 +31,15 @@ export default class AssetsManager extends BaseManager {
     async loadAssetsAsync(path: string, type: typeof cc.Asset): Promise<any> {
         return new Promise((resolve: Function, reject: Function) => {
             let _self = this;
-            if(_self._resList[path]){
-                resolve(_self._resList[path]);
+            if(_self._assetsList[path]){
+                resolve(_self._assetsList[path]);
             }else{
                 cc.loader.loadRes(path, type, function (err, res) {
                     if(err){
                         reject();
                         return;
                     }
-                    _self._resList[path] = res;
+                    _self._assetsList[path] = res;
                     resolve(res);
                 });
             }
@@ -59,14 +48,13 @@ export default class AssetsManager extends BaseManager {
 
     releaseRes(resPath: string){
         cc.loader.releaseRes(resPath);
-        this._resList[resPath] = null;
+        this._assetsList[resPath] = null;
     }
     
     onDestroy(){
-        AssetsManager._instance = null;
-        for(let path in this._resList){
+        for(let path in this._assetsList){
             this.releaseRes(path);
         }
-        this._resList = {};
+        this._assetsList = {};
     }
 }

@@ -1,13 +1,12 @@
 import { MVCS } from "../core/mvc/mvcs";
-import UIManager from "../manager/UIManager";
 import { ResPath } from "../respath/ResPath";
 import { CommonConst } from "../game/common/CommonConst";
 import SceneData from "./SceneData";
-import ResManager from "../manager/ResManager";
 import SceneView from "./SceneView";
 
 import CryptoJs = require("../CryptoJS 2");
 import base64 from "../jsencrypt/bin/jsbase64";
+import Manager from "../manager/Manager";
 declare let JSEncrypt;
 export default class SceneCtrl extends MVCS.Ctrl {
     private static _instance: SceneCtrl = null;
@@ -17,7 +16,7 @@ export default class SceneCtrl extends MVCS.Ctrl {
     constructor(){
         super();
         SceneCtrl._instance = this;
-        UIManager.getInstance().open(ResPath.uiPath.UI_Scene, CommonConst.Layer.Scene, CommonConst.ShowEffect.None); 
+        Manager.UI.open(ResPath.uiPath.UI_Scene, CommonConst.Layer.Scene, CommonConst.ShowEffect.None); 
     }    
     public static getInstance(){
         if(this._instance === null){
@@ -66,8 +65,8 @@ export default class SceneCtrl extends MVCS.Ctrl {
 
         cc.log("------CryptoJs-------" ,CryptoJs.AES)
 
-        const key = CryptoJs.enc.Utf8.parse("1234123412ABCDEF");
-        const iv = CryptoJs.enc.Utf8.parse("ABCDEF1234123412");
+        // const key = CryptoJs.enc.Utf8.parse("1234123412ABCDEF");
+        // const iv = CryptoJs.enc.Utf8.parse("ABCDEF1234123412");
 
         // let getAesKey = (account: string = "1234ABCD") => {
         //     let tempKey = account + Date.now();
@@ -92,7 +91,7 @@ export default class SceneCtrl extends MVCS.Ctrl {
         //     return rootKey;
         // }
 
-        let tk = this.getAesKey();
+        // let tk = this.getAesKey();
 
         // let enc = (data) => {
         //     let srcs = CryptoJs.enc.Utf8.parse(data);
@@ -109,29 +108,33 @@ export default class SceneCtrl extends MVCS.Ctrl {
         // }
 
         //en
-        let enText = this.enc(testText, key);
+        // let enText = this.enc(testText, CryptoJs.enc.Utf8.parse(tk));
 
-        //de
-        let deText = this.dec(enText, key);
+        // //de
+        // let deText = this.dec(enText, CryptoJs.enc.Utf8.parse(tk));
 
-        cc.log("enText", enText)
-        cc.log("deText", deText)
-        cc.log("--------deText--------", key)
+        // cc.log("enText", enText)
+        // cc.log("deText", deText)
+        // cc.log("--------deText--------", tk, Date.now())
 
 
-        let enKey = encrypt.encrypt("1234123412ABCDEF");
-        encrypt.setPrivateKey(priKey); 
+        // // let enKey = encrypt.encrypt("1234123412ABCDEF");
+        // // encrypt.setPrivateKey(priKey); 
 
-        let deKey = encrypt.decrypt(enKey);
-        cc.log("enKey", enKey)
-        cc.log("deKey", deKey)
-        cc.log("----------------")
+        // // let deKey = encrypt.decrypt(enKey);
+        // // cc.log("enKey", enKey)
+        // // cc.log("deKey", deKey)
+        // // cc.log("----------------")
 
-        cc.log(this.dec(enText, CryptoJs.enc.Utf8.parse(deKey)), enText);
+        // cc.log(enText, deText);
         // CryptoJs.algo
         // UIManager.getInstance().getView<SceneView>(ResPath.uiPath.UI_Scene).then((view) => {
         //     view.op();
         // });
+
+        let ecText = this.encrypt(testText);        
+        let deText = this.decrypt(ecText);
+        cc.log("=-=-=-=-", ecText, deText, CryptoJs.enc.Utf8.stringify(this._key), this._iv)
     }
 
     enc(data, key){
@@ -164,10 +167,55 @@ export default class SceneCtrl extends MVCS.Ctrl {
             t16 += nex16[i];
         }
         nex16 = t16;
+        this.iv = CryptoJs.enc.Utf8.parse(nex16);
         let date = new Date();
         let day = date.getDate();
         cc.log("day", day % 2);
         rootKey = ((day % 2) == 0) ? pre16 + nex16 : nex16 + pre16;
         return rootKey;
+    }
+
+    private _key = "";
+    private _iv  = "";
+
+    public encrypt(data: string): string {
+        this.initAesKey();
+        let srcs = CryptoJs.enc.Utf8.parse(data);
+        let encrypted = CryptoJs.AES.encrypt(srcs, this._key, { iv: this._iv, mode: CryptoJs.mode.CBC, padding: CryptoJs.pad.Pkcs7 });
+        return encrypted.ciphertext.toString().toUpperCase();
+    }
+
+    public decrypt(enData: string): string {
+        let enHexStr = CryptoJs.enc.Hex.parse(enData);
+        let srcs = CryptoJs.enc.Base64.stringify(enHexStr);
+        let dec = CryptoJs.AES.decrypt(srcs, this._key, {iv: this._iv, mode: CryptoJs.mode.CBC, padding: CryptoJs.pad.Pkcs7 });
+        let decryptedStr = dec.toString(CryptoJs.enc.Utf8);
+        return decryptedStr.toString();
+    }
+
+    public initAesKey(account: string = "1234ABCD"){
+        let tempKey = account + Date.now();
+        let enKey = tempKey;
+        let pre16 = "";
+        let nex16 = "";
+        let rootKey = "";
+        for(let i = 0; i < 16; ++i){
+            pre16 += enKey[i];
+            nex16 += enKey[i + 16];
+        }
+        nex16 = base64.encode(nex16);
+        let t16 = "";
+        for(let i = 0; i < 16; ++i){
+            t16 += nex16[i];
+        }
+        nex16 = t16;
+        let date = new Date();
+        let day = date.getDate();
+        rootKey = ((day % 2) == 0) ? pre16 + nex16 : nex16 + pre16;
+
+        this._iv = CryptoJs.enc.Utf8.parse(nex16);
+        this._key = CryptoJs.enc.Utf8.parse(rootKey);
+
+        return this._key;
     }
 }
