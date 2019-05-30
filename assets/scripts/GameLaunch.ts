@@ -1,7 +1,4 @@
-import ModuleManager from "./manager/ModuleManager";
-import UIManager from "./manager/UIManager";
-import ResManager from "./manager/ResManager";
-import SoundManager from "./manager/SoundManager";
+import Manager from "./manager/Manager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -13,17 +10,18 @@ export default class GameLaunch extends cc.Component {
         /** 设置打印功能 */
         this.showLog();
 
-        /** 资源获取管理 */
-        this._managerList.push(ResManager.getInstance());
+        // /** 资源获取管理 */
+        // this._managerList.push(ResManager.getInstance());
 
-        /** 游戏模块管理 */
-        this._managerList.push(ModuleManager.getInstance());
+        // /** 游戏模块管理 */
+        // this._managerList.push(ModuleManager.getInstance());
 
-        /** 游戏UI管理 */
-        this._managerList.push(UIManager.getInstance());
+        // /** 游戏UI管理 */
+        // this._managerList.push(UIManager.getInstance());
 
-        /** 音频管理 */
-        this._managerList.push(SoundManager.getInstance());
+        // /** 音频管理 */
+        // this._managerList.push(SoundManager.getInstance());
+        this._managerList.push(new Manager());
     }
 
     onDestroy(){

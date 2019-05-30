@@ -8,6 +8,7 @@ export default class SceneView extends MVCS.View {
     private _ctrl: SceneCtrl = SceneCtrl.getInstance();
     start(){
         this._ctrl.createMonster();
+        cc.log("123213")
     }
     op(){
         cc.log("000")

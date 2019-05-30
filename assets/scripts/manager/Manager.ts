@@ -5,7 +5,13 @@ import ResManager from "./resmanager/ResManager";
 import AssetsManager from "./resmanager/AssetsManager";
 
 export default class Manager {
-    constructor(){}
+    constructor(){
+        Manager.Module;
+        Manager.UI;
+        Manager.Assets;
+        Manager.Sound;
+        Manager.Res;
+    }
     /** 资源加载管理 */
     private static _assetsManager: AssetsManager = null;
     public static get Assets(){
@@ -48,6 +54,6 @@ export default class Manager {
         if(!this._resManager){
             this._resManager = new ResManager();
         }
-        return this._resManager;
+        return this._resManager; 
     }
 }

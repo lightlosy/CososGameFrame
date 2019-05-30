@@ -132,9 +132,15 @@ export default class SceneCtrl extends MVCS.Ctrl {
         //     view.op();
         // });
 
-        let ecText = this.encrypt(testText);        
-        let deText = this.decrypt(ecText);
-        cc.log("=-=-=-=-", ecText, deText, CryptoJs.enc.Utf8.stringify(this._key), this._iv)
+        let ecText = this.encrypt(testText);
+        let keyStr = encrypt.decrypt("r/pA/0kjLW6x/P1Y1SSClaNPCjrWwLGtsG/MQ5WYOWppvEG1S62sHZmFIZia15eeyNdUORUIgY1kNtMmKw8XH0tWf21uevEMnU9z7RFijpu68ancq20kupCJqKjrERBVzBCeQmZdnGakaa+KBUjeIKWOofoR/0bWhAZ0TpHlp2g=")
+        this._key = CryptoJs.enc.Utf8.parse("1234ABCD15591953NjMyOTl1bmRlZmlu");     
+        this._iv = this._key;
+        let ent = this.encrypt(testText);
+        let deText = this.decrypt(ent);
+        let rsaTex = encrypt.encrypt(testText);
+        let rsakey = encrypt.encrypt(CryptoJs.enc.Utf8.stringify(this._key));
+        cc.log("=-=-=-=-",this._key, deText, ent)
     }
 
     enc(data, key){
@@ -150,44 +156,21 @@ export default class SceneCtrl extends MVCS.Ctrl {
         return decryptedStr.toString();
     }
 
-
-    getAesKey(account: string = "1234ABCD"){
-        let tempKey = account + Date.now();
-        let enKey = this.enc(tempKey, this.aseKey);
-        let pre16 = "";
-        let nex16 = "";
-        let rootKey = "";
-        for(let i = 0; i < 16; ++i){
-            pre16 += enKey[i];
-            nex16 += enKey[i + 16];
-        }
-        nex16 = base64.encode(nex16);
-        let t16 = "";
-        for(let i = 0; i < 16; ++i){
-            t16 += nex16[i];
-        }
-        nex16 = t16;
-        this.iv = CryptoJs.enc.Utf8.parse(nex16);
-        let date = new Date();
-        let day = date.getDate();
-        cc.log("day", day % 2);
-        rootKey = ((day % 2) == 0) ? pre16 + nex16 : nex16 + pre16;
-        return rootKey;
-    }
-
     private _key = "";
     private _iv  = "";
 
     public encrypt(data: string): string {
-        this.initAesKey();
+        if(!this._key)
+            this.initAesKey();
         let srcs = CryptoJs.enc.Utf8.parse(data);
         let encrypted = CryptoJs.AES.encrypt(srcs, this._key, { iv: this._iv, mode: CryptoJs.mode.CBC, padding: CryptoJs.pad.Pkcs7 });
-        return encrypted.ciphertext.toString().toUpperCase();
+        return encrypted.ciphertext.toString();
     }
 
     public decrypt(enData: string): string {
         let enHexStr = CryptoJs.enc.Hex.parse(enData);
         let srcs = CryptoJs.enc.Base64.stringify(enHexStr);
+        // this._key = 
         let dec = CryptoJs.AES.decrypt(srcs, this._key, {iv: this._iv, mode: CryptoJs.mode.CBC, padding: CryptoJs.pad.Pkcs7 });
         let decryptedStr = dec.toString(CryptoJs.enc.Utf8);
         return decryptedStr.toString();
@@ -213,8 +196,11 @@ export default class SceneCtrl extends MVCS.Ctrl {
         let day = date.getDate();
         rootKey = ((day % 2) == 0) ? pre16 + nex16 : nex16 + pre16;
 
-        this._iv = CryptoJs.enc.Utf8.parse(nex16);
+        // this._iv = CryptoJs.enc.Utf8.parse(nex16);
         this._key = CryptoJs.enc.Utf8.parse(rootKey);
+        this._iv = CryptoJs.enc.Utf8.parse(rootKey);
+
+        cc.log("=====rootKeyrootKeyrootKey", rootKey)
 
         return this._key;
     }
