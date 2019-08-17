@@ -17,12 +17,9 @@ export default class MainUIView extends MVCS.View {
     }
 
     start(){
-        Manager.Res.getDraw("1").then((spFrame) => {
-            this.img.spriteFrame = spFrame;
-        });
+
     }
 
     onClick(){
-        Manager.Sound.play(ResPath.audioPath.btnClick);
     }
 }

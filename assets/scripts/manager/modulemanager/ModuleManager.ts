@@ -1,8 +1,8 @@
 import BaseManager from "../base/BaseManager";
-import SceneCtrl from "../../scene/SceneCtrl";
 import MainUICtrl from "../../game/mainui/MainUICtrl";
+import SceneCtrl from "../../game/scene/SceneCtrl";
 
-export default class ModuleManager extends BaseManager{
+export default class ModuleManager extends BaseManager {
     moduleTable = [];
     constructor(){
         super();

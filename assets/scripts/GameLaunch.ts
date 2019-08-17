@@ -9,18 +9,7 @@ export default class GameLaunch extends cc.Component {
     onLoad(){
         /** 设置打印功能 */
         this.showLog();
-
-        // /** 资源获取管理 */
-        // this._managerList.push(ResManager.getInstance());
-
-        // /** 游戏模块管理 */
-        // this._managerList.push(ModuleManager.getInstance());
-
-        // /** 游戏UI管理 */
-        // this._managerList.push(UIManager.getInstance());
-
-        // /** 音频管理 */
-        // this._managerList.push(SoundManager.getInstance());
+        /** 管理类初始化 */
         this._managerList.push(new Manager());
     }
 

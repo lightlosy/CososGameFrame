@@ -1,11 +1,8 @@
-export const CommonConst = {
-    Layer: {
-        Scene: 1,
-        MainUI: 2,
-        Tips: 3,
-    },
-    ShowEffect: {
-        None: 1,
-        Scale: 2
+export namespace CommonConst {
+    export enum eUILayer{
+        Scene = 1,
+        Panel,
+        MainUI,
+        Tips,
     }
 }

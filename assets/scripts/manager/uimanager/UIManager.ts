@@ -19,6 +19,7 @@ class viewElement {
 export default class UIManager extends BaseManager {
     private _views: {[key: string]: viewElement} = {};
     private _root: cc.Node = new cc.Node("uiRoot");
+    private _camera: cc.Node = new cc.Node(`2DCamera`);
 
     constructor(){
         super();
@@ -27,9 +28,12 @@ export default class UIManager extends BaseManager {
         this._root.height = h;
         this._root.x = 0;
         this._root.y = 0;
+        this._root.zIndex = 2;
+        // let camera = this._camera.addComponent(cc.Camera);
+        // this._camera.parent = this._root;
     }
 
-    open(resPath: string, zIndex: number, openEffect: number): Promise<MVCS.View>{
+    open(resPath: string, zIndex: number, openEffect?: number): Promise<MVCS.View>{
         return new Promise((resolve) => {
             let view = this._views[resPath];
             if(!view){
@@ -38,6 +42,7 @@ export default class UIManager extends BaseManager {
             let openSuc = (viewNode: cc.Node) => {
                 viewNode.zIndex = zIndex;
                 viewNode.parent = this._root;
+                console.log(`***** 打开UI ${resPath} *****`);
             }
             if(!view.instance){
                 this._createView(resPath).then((viewObj: MVCS.View) => {

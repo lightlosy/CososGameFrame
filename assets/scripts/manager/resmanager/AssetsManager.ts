@@ -37,6 +37,7 @@ export default class AssetsManager extends BaseManager {
                 cc.loader.loadRes(path, type, function (err, res) {
                     if(err){
                         reject();
+                        console.log(`***** 找不到资源 path: ${path} *****`);
                         return;
                     }
                     _self._assetsList[path] = res;

@@ -11,11 +11,7 @@ export namespace MVCS {
         onFlush(){}
     }
     
-    export abstract class Ctrl extends BaseCtrl {
+    export abstract class Ctrl extends BaseCtrl {}
     
-    }
-    
-    export abstract class Data extends BaseData {
-    
-    }
+    export abstract class Data extends BaseData {}
 }
