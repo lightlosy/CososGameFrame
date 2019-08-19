@@ -15,7 +15,7 @@ export default class SceneManager extends BaseManager {
             Manager.Res.getPrefab(scenePrefabPath).then((sceneNode: cc.Node) => {
                 sceneNode.parent = this._root;
                 this._sceneMap[scenePrefabPath] = sceneNode;
-                resolve();
+                resolve(sceneNode);
             });
         });
     }

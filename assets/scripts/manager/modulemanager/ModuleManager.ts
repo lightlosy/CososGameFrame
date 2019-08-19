@@ -12,7 +12,7 @@ export default class ModuleManager extends BaseManager {
     initModule(){
         return [
             SceneCtrl.getInstance(),
-            MainUICtrl.getInstance(),
+            // MainUICtrl.getInstance(),
         ];
     }
 

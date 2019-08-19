@@ -2,11 +2,13 @@ import { MVCS } from "../../core/mvc/mvcs";
 import SceneData from "./SceneData";
 import { ResPath } from "../../respath/ResPath";
 import Manager from "../../manager/Manager";
+import SceneView from "./SceneView";
 
 declare let JSEncrypt;
 export default class SceneCtrl extends MVCS.Ctrl {
     private static _instance: SceneCtrl = null;
     private _data: SceneData = new SceneData();
+    private _view: SceneView = null;
     aseKey = "1234123412ABCDEF";
     // iv = CryptoJs.enc.Utf8.parse("1234123412ABCDEF");
     constructor(){
@@ -21,12 +23,23 @@ export default class SceneCtrl extends MVCS.Ctrl {
         return this._instance;
     }
 
+    public getData(){
+        return this._data;
+    }
+
     initScene(){
-        Manager.Scene.enterGameScene(ResPath.scenePath.Scene_MainScene);
+        Manager.Scene.enterGameScene(ResPath.scenePath.Scene_MainScene).then((view: cc.Node) => {
+            this._view = view.getComponent(SceneView);
+            Manager.Res.getConfig(ResPath.configPath.sceneConfig["Config_Scene_" + this._data.getLevel()]).then((res) => {
+                cc.log("***** 场景配置", this._view);
+                this._data.setObjects(res[1].ObjectArray);
+                this._view.initView();
+            });
+        });
     }
 
     initMonster(){
-        this.createMonster();
+        
     }
 
     createMonster(){

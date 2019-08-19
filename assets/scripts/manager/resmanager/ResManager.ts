@@ -22,9 +22,8 @@ export default class ResManager extends BaseManager {
     }
 
     /** 获取配置 */
-    async getMonsterConfig(name: string): Promise<cc.JsonAsset> {
-        let path = "config/auto/";
-        return this._getConfig(path + name);
+    async getConfig(path: string): Promise<cc.JsonAsset> {
+        return this._getConfig(path);
     }
 
     //------------------------------------------------------------
