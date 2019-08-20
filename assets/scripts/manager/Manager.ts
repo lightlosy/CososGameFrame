@@ -5,6 +5,7 @@ import ResManager from "./resmanager/ResManager";
 import AssetsManager from "./resmanager/AssetsManager";
 import SceneManager from "./scenemanager/SceneManager";
 import BaseManager from "./base/BaseManager";
+import ConfigManager from "./configmanager/ConfigManager";
 
 export default class Manager {
     private _manager: Array<BaseManager> = [];
@@ -15,6 +16,7 @@ export default class Manager {
         this._manager.push(Manager.Sound);
         this._manager.push(Manager.Res);
         this._manager.push(Manager.Scene);
+        this._manager.push(Manager.Config);
     }
     /** 资源加载管理 */
     private static _assetsManager: AssetsManager = null;
@@ -67,12 +69,23 @@ export default class Manager {
         return this._resManager; 
     }
 
-    public static _scene: SceneManager = null;
+    /** 场景管理 */
+    public static _sceneManager: SceneManager = null;
     public static get Scene(){
-        if(!this._scene){
+        if(!this._sceneManager){
             console.log("** 实例化SceneManager **");
-            this._scene = new SceneManager();
+            this._sceneManager = new SceneManager();
         }
-        return this._scene; 
+        return this._sceneManager; 
+    }
+
+    /** 配置管理 */
+    public static _configManager: ConfigManager = null;
+    public static get Config(){
+        if(!this._configManager){
+            console.log("** 实例化ConfigManager **");
+            this._configManager = new ConfigManager();
+        }
+        return this._configManager; 
     }
 }
